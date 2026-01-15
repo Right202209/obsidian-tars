@@ -80,12 +80,16 @@ const sendRequestFunc = (settings: ClaudeOptions): SendRequest =>
 		let baseURL = originalBaseURL
 		if (!apiKey) throw new Error(t('API key is required'))
 
-		// Remove /v1/messages from baseURL if present, as Anthropic SDK will add it automatically
-		if (baseURL.endsWith('/v1/messages/')) {
-			baseURL = baseURL.slice(0, -'/v1/messages/'.length)
-		} else if (baseURL.endsWith('/v1/messages')) {
-			baseURL = baseURL.slice(0, -'/v1/messages'.length)
+		// 如果 baseURL 以 /messages/ 或 /messages 结尾，只移除 messages 部分，保留 /v1
+		if (baseURL.endsWith('/messages/')) {
+			baseURL = baseURL.slice(0, -'/messages/'.length);
+		} else if (baseURL.endsWith('/messages')) {
+			baseURL = baseURL.slice(0, -'/messages'.length);
 		}
+
+		// 可选：确保最后没有多余的斜杠（根据你的需求决定）
+		if (baseURL.endsWith('/')) {
+			baseURL = baseURL.slice(0, -1);
 
 		const [system_msg, messagesWithoutSys] =
 			messages[0].role === 'system' ? [messages[0], messages.slice(1)] : [null, messages]
@@ -176,6 +180,10 @@ const sendRequestFunc = (settings: ClaudeOptions): SendRequest =>
 	}
 
 const models = [
+	'claude-opus-4-5-thinking',
+	'claude-sonnet-4-5-thinking',
+	'claude-sonnet-4-5',
+	'claude-opus-4-5',
 	'claude-sonnet-4-0',
 	'claude-opus-4-0',
 	'claude-3-7-sonnet-latest',
