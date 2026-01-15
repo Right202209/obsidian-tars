@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch: # 添加这一行，启用手动触发按钮
+
 
 jobs:
   build:
