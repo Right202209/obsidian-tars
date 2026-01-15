@@ -90,6 +90,7 @@ const sendRequestFunc = (settings: ClaudeOptions): SendRequest =>
 		// 可选：确保最后没有多余的斜杠（根据你的需求决定）
 		if (baseURL.endsWith('/')) {
 			baseURL = baseURL.slice(0, -1);
+		}
 
 		const [system_msg, messagesWithoutSys] =
 			messages[0].role === 'system' ? [messages[0], messages.slice(1)] : [null, messages]
