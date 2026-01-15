@@ -4,7 +4,7 @@ import { t } from 'src/lang/helper'
 import { BaseOptions, Message, ResolveEmbedAsBinary, SaveAttachment, SendRequest, Vendor } from '.'
 import { getMimeTypeFromFilename } from './utils'
 
-const models = ['gpt-image-1']
+const models = ['gpt-image-1','gemini-3-pro-image']
 
 export const DEFAULT_GPT_IMAGE_OPTIONS = {
 	n: 2,
