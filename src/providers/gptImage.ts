@@ -51,9 +51,26 @@ const sendRequestFunc = (settings: GptImageOptions): SendRequest =>
 		}
 		const prompt = lastMsg.content
 
+		// --- 基础路径标准化逻辑开始 ---
+		let normalizedBaseURL = baseURL;
+		if (normalizedBaseURL) {
+			// 1. 移除可能存在的具体 API 路径后缀，保留到 /v1 级别
+			normalizedBaseURL = normalizedBaseURL.replace(/\/images\/(generations|edit)\/?$/, '');
+			normalizedBaseURL = normalizedBaseURL.replace(/\/messages\/?$/, '');
+			normalizedBaseURL = normalizedBaseURL.replace(/\/chat\/completions\/?$/, '');
+			
+			// 2. 移除末尾多余的斜杠，确保干净
+			normalizedBaseURL = normalizedBaseURL.replace(/\/+$/, '');
+			
+			// 结果示例: 
+			// "http://proxy.com/v1/messages" -> "http://proxy.com/v1"
+			// "http://proxy.com/v1/" -> "http://proxy.com/v1"
+		}
+		// --- 基础路径标准化逻辑结束 ---
+
 		const client = new OpenAI({
 			apiKey,
-			baseURL,
+			baseURL: normalizedBaseURL, // 使用处理后的 URL
 			dangerouslyAllowBrowser: true
 		})
 
